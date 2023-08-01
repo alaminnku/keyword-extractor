@@ -1,11 +1,5 @@
 import puppeteer from 'puppeteer';
-import {
-  endsWithExcludedWord,
-  getMostFrequentPhrases,
-  startsWithExcludedWord,
-} from './utils';
-
-interface IPhrases {}
+import { getMostFrequentPhrases } from './utils';
 
 // Extract keyword
 async function extractKeywords(url: string) {
