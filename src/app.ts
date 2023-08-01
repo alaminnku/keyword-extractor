@@ -18,12 +18,12 @@ function getMostFrequentPhrases(input: string, outputCount: number) {
   let phrases: IPhrases = {};
 
   // Loop through the words
-  for (let i = 0; i < words.length; i++) {
+  for (let wordIndex = 0; wordIndex < words.length; wordIndex++) {
     // For each word create a phrase that is 2-3 words long
-    for (let j = 2; j <= 3; j++) {
+    for (let wordCount = 2; wordCount <= 3; wordCount++) {
       // Create a phrase
       const phrase = words
-        .slice(i, i + j)
+        .slice(wordIndex, wordIndex + wordCount)
         .join(' ')
         .trim();
 
@@ -119,7 +119,7 @@ async function extractKeywords(url: string, outputCount: number) {
 // output count
 
 // extractKeywords('https://www.octib.com/', 2);
-extractKeywords('https://sporkbytes.com/', 3);
+// extractKeywords('https://sporkbytes.com/', 3);
 // extractKeywords('https://drinklmnt.com/', 3);
 // extractKeywords('https://backlinko.com/', 4);
 // extractKeywords('https://herbalvineyards.com/', 3);
