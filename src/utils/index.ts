@@ -16,11 +16,11 @@ export const endsWithExcludedWord = (phrase: string) => {
 // Get most frequent phrases
 export function getMostFrequentPhrases(input: string) {
   // Remove everything that's not a word or a white space
-  // convert the text to lower case
+  // and convert the text to lower case
   const cleanedText = input.replace(/[^\w\s]/g, '').toLowerCase();
 
   // Create array of words
-  // Split by one or more white space
+  // split by one or more white space
   const words = cleanedText.split(/\s+/);
 
   // Create phrases object
@@ -28,7 +28,7 @@ export function getMostFrequentPhrases(input: string) {
 
   // Loop through the words
   for (let wordIndex = 0; wordIndex < words.length; wordIndex++) {
-    // For each word create a phrase that is 2-3 words long
+    // For each word create multiple phrases
     for (
       let wordCount = wordIndex + 2;
       wordCount <= wordIndex + 3 && wordCount <= words.length;
@@ -45,9 +45,9 @@ export function getMostFrequentPhrases(input: string) {
   // Return the most frequent phrases
   return (
     Object.entries(phrases)
-      // Sort the phrases by most frequency
+      // Sort phrases by most frequency
       .sort((a, b) => b[1] - a[1])
-      // Get the phrases text
+      // Get the trimmed phrases text
       .map((element) => element[0].trim())
       // Remove phrases that are:
       // Smaller than 4 characters
