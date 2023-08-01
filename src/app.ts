@@ -20,9 +20,12 @@ function getMostFrequentPhrases(input: string, outputCount: number) {
   // Loop through the words
   for (let i = 0; i < words.length; i++) {
     // For each word create a phrase that is 2-3 words long
-    for (let j = 2; j < 4; j++) {
+    for (let j = 2; j <= 3; j++) {
       // Create a phrase
-      const phrase = words.slice(i, i + j).join(' ');
+      const phrase = words
+        .slice(i, i + j)
+        .join(' ')
+        .trim();
 
       // Update phrases
       phrases = { ...phrases, [phrase]: (phrases[phrase] || 0) + 1 };
@@ -34,17 +37,17 @@ function getMostFrequentPhrases(input: string, outputCount: number) {
     Object.entries(phrases)
       // Sort the phrases by most frequency
       .sort((a, b) => b[1] - a[1])
+      // Get the phrases text
+      .map((element) => element[0].trim())
+      // Remove phrases that are smaller than 4 characters
+      .filter((phrase) => phrase.length > 4)
       // Get a certain number of phrases
       .slice(0, outputCount)
-      // Get the phrases text
-      .map((element) => element[0])
-      // Remove empty phrases
-      .filter((phrase) => phrase.trim())
   );
 }
 
 // Extract keyword
-async function extractKeywords(url: string) {
+async function extractKeywords(url: string, outputCount: number) {
   try {
     // Create browser
     const browser = await puppeteer.launch({
@@ -71,6 +74,11 @@ async function extractKeywords(url: string) {
         .querySelector<HTMLMetaElement>('head > meta[name="description"')
         ?.content.trim();
 
+      // Get keywords
+      const keywords = document
+        .querySelector<HTMLMetaElement>('head > meta[name="keywords"')
+        ?.content.trim();
+
       // Headings
       const heading: string[] = [];
 
@@ -82,16 +90,20 @@ async function extractKeywords(url: string) {
       // Return data
       return {
         title,
-        description,
+        keywords,
         heading,
+        description,
       };
     });
 
     // Create input
-    const input = `${data.title} ${data.description} ${data.heading}`;
+    const input = `${data.title} ${data.keywords} ${data.description} ${data.heading}`;
 
     // Get most frequently used phrases
-    const mostFrequentlyUsedPhrases = getMostFrequentPhrases(input, 5);
+    const mostFrequentlyUsedPhrases = getMostFrequentPhrases(
+      input,
+      outputCount
+    );
 
     // Log and return the phrases
     console.log(mostFrequentlyUsedPhrases);
@@ -102,7 +114,14 @@ async function extractKeywords(url: string) {
   }
 }
 
-// https://drinklmnt.com/
-// https://herbalvineyards.com/
+// Call the function with:
+// the URL
+// output count
 
-extractKeywords('https://drinklmnt.com/');
+// extractKeywords('https://www.octib.com/', 2);
+extractKeywords('https://sporkbytes.com/', 3);
+// extractKeywords('https://drinklmnt.com/', 3);
+// extractKeywords('https://backlinko.com/', 4);
+// extractKeywords('https://herbalvineyards.com/', 3);
+// extractKeywords('https://www.traversymedia.com/', 3);
+// extractKeywords('https://studywebdevelopment.com/', 3);
