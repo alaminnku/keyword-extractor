@@ -1,59 +1,11 @@
 import puppeteer from 'puppeteer';
-import { endsWithExcludedWord, startsWithExcludedWord } from './utils';
+import {
+  endsWithExcludedWord,
+  getMostFrequentPhrases,
+  startsWithExcludedWord,
+} from './utils';
 
-interface IPhrases {
-  [key: string]: number;
-}
-
-// Get most frequent phrases
-function getMostFrequentPhrases(input: string) {
-  // Remove everything that's not a word or a white space
-  // convert the text to lower case
-  const cleanedText = input.replace(/[^\w\s]/g, '').toLowerCase();
-
-  // Create array of words
-  // Split by one or more white space
-  const words = cleanedText.split(/\s+/);
-
-  // Create phrases object
-  let phrases: IPhrases = {};
-
-  // Loop through the words
-  for (let wordIndex = 0; wordIndex < words.length; wordIndex++) {
-    // For each word create a phrase that is 2-3 words long
-    for (
-      let wordCount = wordIndex + 2;
-      wordCount <= wordIndex + 3 && wordCount <= words.length;
-      wordCount++
-    ) {
-      //   Create a phrase
-      const phrase = words.slice(wordIndex, wordCount).join(' ').trim();
-
-      // Update phrases
-      phrases = { ...phrases, [phrase]: (phrases[phrase] || 0) + 1 };
-    }
-  }
-
-  // Return the most frequent phrases
-  return (
-    Object.entries(phrases)
-      // Sort the phrases by most frequency
-      .sort((a, b) => b[1] - a[1])
-      // Get the phrases text
-      .map((element) => element[0].trim())
-      // Remove phrases that are:
-      // Smaller than 4 characters
-      // Starts or ends with excluded words
-      .filter(
-        (phrase) =>
-          phrase.length > 4 &&
-          !startsWithExcludedWord(phrase) &&
-          !endsWithExcludedWord(phrase)
-      )
-      // Get 5 phrases
-      .slice(0, 5)
-  );
-}
+interface IPhrases {}
 
 // Extract keyword
 async function extractKeywords(url: string) {
@@ -121,8 +73,7 @@ async function extractKeywords(url: string) {
 }
 
 // Call the function with the URL
-
-extractKeywords('https://www.octib.com/');
+// extractKeywords('https://www.octib.com/');
 // extractKeywords('https://drinklmnt.com/');
 // extractKeywords('https://backlinko.com/');
 // extractKeywords('https://herbalvineyards.com/');
