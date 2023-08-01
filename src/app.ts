@@ -44,10 +44,10 @@ async function extractKeywords(url: string) {
 
       // Return data
       return {
-        title,
-        keywords,
-        heading,
-        description,
+        title: title || '',
+        keywords: keywords || '',
+        heading: heading || '',
+        description: description || '',
       };
     });
 
@@ -68,8 +68,11 @@ async function extractKeywords(url: string) {
 
 // Call the function with the URL
 // extractKeywords('https://www.octib.com/');
-extractKeywords('https://drinklmnt.com/');
+// extractKeywords('https://drinklmnt.com/');
 // extractKeywords('https://backlinko.com/');
 // extractKeywords('https://herbalvineyards.com/');
 // extractKeywords('https://www.traversymedia.com/');
 // extractKeywords('https://studywebdevelopment.com/');
+extractKeywords(
+  'https://www.prisma.io/docs/concepts/components/prisma-migrate/mental-model'
+);
