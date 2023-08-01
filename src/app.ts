@@ -74,7 +74,7 @@ async function extractKeywords(url: string) {
 
 // Call the function with the URL
 // extractKeywords('https://www.octib.com/');
-// extractKeywords('https://drinklmnt.com/');
+extractKeywords('https://drinklmnt.com/');
 // extractKeywords('https://backlinko.com/');
 // extractKeywords('https://herbalvineyards.com/');
 // extractKeywords('https://www.traversymedia.com/');
