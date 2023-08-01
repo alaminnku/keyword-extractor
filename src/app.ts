@@ -1,4 +1,5 @@
 import puppeteer from 'puppeteer';
+import { endsWithExcludedWord, startsWithExcludedWord } from './utils';
 
 interface IPhrases {
   [key: string]: number;
@@ -40,9 +41,16 @@ function getMostFrequentPhrases(input: string) {
       .sort((a, b) => b[1] - a[1])
       // Get the phrases text
       .map((element) => element[0].trim())
-      // Remove phrases that are smaller than 4 characters
-      .filter((phrase) => phrase.length > 4)
-      // Get a certain number of phrases
+      // Remove phrases that are:
+      // Smaller than 4 characters
+      // Starts or ends with excluded words
+      .filter(
+        (phrase) =>
+          phrase.length > 4 &&
+          !startsWithExcludedWord(phrase) &&
+          !endsWithExcludedWord(phrase)
+      )
+      // Get 5 phrases
       .slice(0, 5)
   );
 }
@@ -114,9 +122,9 @@ async function extractKeywords(url: string) {
 
 // Call the function with the URL
 
-// extractKeywords('https://www.octib.com/');
+extractKeywords('https://www.octib.com/');
 // extractKeywords('https://drinklmnt.com/');
 // extractKeywords('https://backlinko.com/');
-extractKeywords('https://herbalvineyards.com/');
+// extractKeywords('https://herbalvineyards.com/');
 // extractKeywords('https://www.traversymedia.com/');
 // extractKeywords('https://studywebdevelopment.com/');
