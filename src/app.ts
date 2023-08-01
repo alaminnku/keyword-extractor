@@ -5,7 +5,7 @@ interface IPhrases {
 }
 
 // Get most frequent phrases
-function getMostFrequentPhrases(input: string, outputCount: number) {
+function getMostFrequentPhrases(input: string) {
   // Remove everything that's not a word or a white space
   // convert the text to lower case
   const cleanedText = input.replace(/[^\w\s]/g, '').toLowerCase();
@@ -20,12 +20,13 @@ function getMostFrequentPhrases(input: string, outputCount: number) {
   // Loop through the words
   for (let wordIndex = 0; wordIndex < words.length; wordIndex++) {
     // For each word create a phrase that is 2-3 words long
-    for (let wordCount = 2; wordCount <= 3; wordCount++) {
-      // Create a phrase
-      const phrase = words
-        .slice(wordIndex, wordIndex + wordCount)
-        .join(' ')
-        .trim();
+    for (
+      let wordCount = wordIndex + 2;
+      wordCount <= wordIndex + 3 && wordCount <= words.length;
+      wordCount++
+    ) {
+      //   Create a phrase
+      const phrase = words.slice(wordIndex, wordCount).join(' ').trim();
 
       // Update phrases
       phrases = { ...phrases, [phrase]: (phrases[phrase] || 0) + 1 };
@@ -42,12 +43,12 @@ function getMostFrequentPhrases(input: string, outputCount: number) {
       // Remove phrases that are smaller than 4 characters
       .filter((phrase) => phrase.length > 4)
       // Get a certain number of phrases
-      .slice(0, outputCount)
+      .slice(0, 5)
   );
 }
 
 // Extract keyword
-async function extractKeywords(url: string, outputCount: number) {
+async function extractKeywords(url: string) {
   try {
     // Create browser
     const browser = await puppeteer.launch({
@@ -100,10 +101,7 @@ async function extractKeywords(url: string, outputCount: number) {
     const input = `${data.title} ${data.keywords} ${data.description} ${data.heading}`;
 
     // Get most frequently used phrases
-    const mostFrequentlyUsedPhrases = getMostFrequentPhrases(
-      input,
-      outputCount
-    );
+    const mostFrequentlyUsedPhrases = getMostFrequentPhrases(input);
 
     // Log and return the phrases
     console.log(mostFrequentlyUsedPhrases);
@@ -114,14 +112,11 @@ async function extractKeywords(url: string, outputCount: number) {
   }
 }
 
-// Call the function with:
-// the URL
-// output count
+// Call the function with the URL
 
-// extractKeywords('https://www.octib.com/', 2);
-// extractKeywords('https://sporkbytes.com/', 3);
-// extractKeywords('https://drinklmnt.com/', 3);
-// extractKeywords('https://backlinko.com/', 4);
-// extractKeywords('https://herbalvineyards.com/', 3);
-// extractKeywords('https://www.traversymedia.com/', 3);
-// extractKeywords('https://studywebdevelopment.com/', 3);
+// extractKeywords('https://www.octib.com/');
+// extractKeywords('https://drinklmnt.com/');
+// extractKeywords('https://backlinko.com/');
+extractKeywords('https://herbalvineyards.com/');
+// extractKeywords('https://www.traversymedia.com/');
+// extractKeywords('https://studywebdevelopment.com/');
