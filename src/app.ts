@@ -175,7 +175,7 @@ async function extractKeywords(url: string) {
           messages: [
             {
               role: 'user',
-              content: `The following text is taken from a website. Extract 1-5 most frequently used keywords from the text that represents the topics of the website: ${chunk}`,
+              content: `The following text is taken from a website. Extract the 3 most frequently used keywords from the text that represents the topics of the website. Do not number the keywords and make them comma separated: ${chunk}`,
             },
           ],
         });
@@ -198,6 +198,6 @@ async function extractKeywords(url: string) {
 // extractKeywords('https://www.octib.com/');
 // extractKeywords('https://drinklmnt.com/');
 // extractKeywords('https://backlinko.com');
-// extractKeywords('https://herbalvineyards.com/');
+extractKeywords('https://herbalvineyards.com/');
 // extractKeywords('https://www.traversymedia.com/');
 // extractKeywords('https://studywebdevelopment.com/');
