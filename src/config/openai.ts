@@ -1,4 +1,8 @@
+import { config } from 'dotenv';
 import { Configuration, OpenAIApi } from 'openai';
+
+// Dot env config
+config();
 
 // Configure Open AI
 const configuration = new Configuration({

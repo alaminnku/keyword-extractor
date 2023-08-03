@@ -1,8 +1,8 @@
-import { excludedWords } from '../data/excludedWords';
+import { excludedKeywords } from '../data/excludedWords';
 
 // Check if a phrase starts with an excluded words
 export const startsWithExcludedWord = (phrase: string) =>
-  excludedWords.includes(phrase.split(' ')[0]?.trim());
+  excludedKeywords.includes(phrase.split(' ')[0]?.trim());
 
 // Check if a phrase ends with an excluded words
 export const endsWithExcludedWord = (phrase: string) => {
@@ -10,7 +10,7 @@ export const endsWithExcludedWord = (phrase: string) => {
   const words = phrase.split(' ');
 
   // Return status
-  return excludedWords.includes(words[words.length - 1]?.trim());
+  return excludedKeywords.includes(words[words.length - 1]?.trim());
 };
 
 // Get most frequent phrases

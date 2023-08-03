@@ -1,10 +1,6 @@
 import puppeteer from 'puppeteer';
 import { openai } from './config/openai';
-import { config } from 'dotenv';
 import { excludedLinkWords } from './data/excludedWords';
-
-// Configs
-config();
 
 // Extract keyword
 async function extractKeywords(url: string) {
@@ -49,7 +45,7 @@ async function extractKeywords(url: string) {
       .map((link) => (link.startsWith('/') ? `${origin}${link}` : link))
       .filter((link, index, links) => links.indexOf(link) === index);
 
-    // All data
+    // All pages data
     const allPagesData: string[] = [];
 
     // Loop through all links
@@ -154,14 +150,44 @@ async function extractKeywords(url: string) {
       allPagesData.push(cleanedPageData);
     }
 
-    // // Create chat completion
-    // const response = await openai.createCompletion({
-    //   model: 'gpt-3.5-turbo',
-    //   prompt: `Generate 1-5 most frequently words from the following text: ${cleanedInput}`,
-    // });
+    // Convert array to string
+    const allPagesDataString = allPagesData.toString();
 
-    // // @ts-ignore
-    // console.log(response.choices[0].text.strip());
+    // Chunks array
+    const chunks: string[] = [];
+
+    // Chunk amount
+    const chunkAmount = 500;
+
+    // Create chunks string
+    for (let i = 0; i <= allPagesDataString.length; i += chunkAmount) {
+      chunks.push(allPagesDataString.slice(i, i + chunkAmount));
+    }
+
+    // Keywords array
+    const keywords: string[] = [];
+
+    await Promise.allSettled(
+      chunks.map(async (chunk) => {
+        // Make request to Open AI
+        const response = await openai.createChatCompletion({
+          model: 'gpt-3.5-turbo',
+          messages: [
+            {
+              role: 'user',
+              content: `The following text is taken from a website. Extract 1-5 most frequently used keywords from the text that represents the topics of the website: ${chunk}`,
+            },
+          ],
+        });
+
+        // Add keywords to the array
+        keywords.push(response.data.choices[0].message?.content?.trim() || '');
+      })
+    );
+
+    // Log and return keywords
+    console.log(keywords);
+    return keywords;
   } catch (err) {
     // Log error
     console.log(err);
