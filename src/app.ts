@@ -146,7 +146,7 @@ async function extractKeywords(url: string) {
       // Clean page data
       const cleanedPageData = pageData.replace(/[^\w\s]/g, '').toLowerCase();
 
-      // Add the cleaned data to all data
+      // Add the cleaned data to all pages data
       allPagesData.push(cleanedPageData);
     }
 
@@ -159,7 +159,7 @@ async function extractKeywords(url: string) {
     // Chunk amount
     const chunkAmount = 500;
 
-    // Create chunks string
+    // Create chunks of 500 characters
     for (let i = 0; i <= allPagesDataString.length; i += chunkAmount) {
       chunks.push(allPagesDataString.slice(i, i + chunkAmount));
     }
