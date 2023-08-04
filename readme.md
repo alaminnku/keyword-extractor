@@ -1,4 +1,4 @@
-# Text to Keywords
+# Text to keywords
 
 A small package to extract the most frequently used phrases or keywords from a long text.
 

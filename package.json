@@ -1,6 +1,6 @@
 {
   "name": "text-to-keywords",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "A small package to extract the most frequently used phrases or keywords from a long text.",
   "main": "dist/app.js",
   "types": "dist/app.d.ts",
@@ -10,11 +10,6 @@
   },
   "author": "Alamin Shaikh",
   "license": "MIT",
-  "devDependencies": {
-    "@types/node": "^20.4.5",
-    "ts-node": "^10.9.1",
-    "typescript": "^5.1.6"
-  },
   "files": [
     "dist/**/*"
   ],
@@ -25,5 +20,10 @@
   "keywords": [
     "text",
     "keyword"
-  ]
+  ],
+  "devDependencies": {
+    "@types/node": "^20.4.5",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.1.6"
+  }
 }
