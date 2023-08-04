@@ -245,7 +245,7 @@ const endsWithExcludedWord = (phrase: string) => {
 };
 
 // Extract keywords from Text
-export function extractKeywordsFromText(input: string) {
+export default function extractKeywords(input: string) {
   // Remove everything that's not a word or a white space
   // and convert the text to lower case
   const cleanedText = input.replace(/[^\w\s]/g, '').toLowerCase();

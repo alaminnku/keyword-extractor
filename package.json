@@ -1,7 +1,7 @@
 {
-  "name": "text-to-keyword",
-  "version": "1.0.0",
-  "description": "A node.js library to extract keywords from long text.",
+  "name": "text-to-keywords",
+  "version": "1.0.1",
+  "description": "A small package to extract the most frequently used phrases or keywords from a long text.",
   "main": "dist/app.js",
   "types": "dist/app.d.ts",
   "scripts": {
@@ -21,5 +21,9 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/alaminnku/keyword-extractor.git"
-  }
+  },
+  "keywords": [
+    "text",
+    "keyword"
+  ]
 }
