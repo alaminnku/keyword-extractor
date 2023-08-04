@@ -1,12 +1,13 @@
 {
-  "name": "keyword-extractor",
+  "name": "@octibsoft/keyword-extractor",
   "repository": {
     "type": "git",
     "url": "https://github.com/alaminnku/keyword-extractor.git"
   },
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "A node.js library to extract keywords from a URL or plain text.",
   "main": "dist/app.js",
+  "types": "dist/app.d.ts",
   "files": [
     "dist"
   ],
@@ -19,8 +20,5 @@
     "@types/node": "^20.4.5",
     "ts-node": "^10.9.1",
     "typescript": "^5.1.6"
-  },
-  "dependencies": {
-    "puppeteer": "^20.9.0"
   }
 }

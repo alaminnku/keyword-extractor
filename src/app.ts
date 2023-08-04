@@ -1,96 +1,248 @@
-import puppeteer from 'puppeteer';
-import { endsWithExcludedWord, startsWithExcludedWord } from './utils';
+// Skip words
+const skipWords = [
+  'the',
+  'is',
+  'and',
+  'a',
+  'an',
+  'in',
+  'on',
+  'of',
+  'for',
+  'to',
+  'by',
+  'with',
+  'from',
+  'at',
+  'as',
+  'about',
+  'or',
+  'if',
+  'it',
+  'how',
+  'what',
+  'why',
+  'when',
+  'who',
+  'where',
+  'which',
+  'their',
+  'his',
+  'her',
+  'its',
+  'yours',
+  'mine',
+  'theirs',
+  'ours',
+  'my',
+  'your',
+  'we',
+  'they',
+  'our',
+  'i',
+  'you',
+  'me',
+  'him',
+  'us',
+  'them',
+  'myself',
+  'yourself',
+  'himself',
+  'herself',
+  'itself',
+  'ourselves',
+  'themselves',
+  'this',
+  'that',
+  'these',
+  'those',
+  'each',
+  'every',
+  'all',
+  'any',
+  'some',
+  'be',
+  'have',
+  'do',
+  'can',
+  'will',
+  'should',
+  'would',
+  'could',
+  'may',
+  'might',
+  'must',
+  'shall',
+  'not',
+  'no',
+  'yes',
+  'am',
+  'are',
+  'was',
+  'were',
+  'has',
+  'had',
+  'does',
+  'did',
+  "can't",
+  "won't",
+  "shouldn't",
+  "wouldn't",
+  "couldn't",
+  "mustn't",
+  "shan't",
+  'cannot',
+  "it's",
+  "i'm",
+  "you're",
+  "he's",
+  "she's",
+  "we're",
+  "they're",
+  "that's",
+  'there',
+  'here',
+  'thus',
+  'hence',
+  'since',
+  'while',
+  'after',
+  'before',
+  'until',
+  'although',
+  'because',
+  'unless',
+  'beside',
+  'beyond',
+  'among',
+  'within',
+  'upon',
+  'underneath',
+  'around',
+  'behind',
+  'between',
+  'through',
+  'below',
+  'beneath',
+  'above',
+  'over',
+  'under',
+  'into',
+  'onto',
+  'amid',
+  'amidst',
+  'across',
+  'against',
+  'along',
+  'atop',
+  'down',
+  'during',
+  'inside',
+  'near',
+  'off',
+  'out',
+  'outside',
+  'past',
+  'throughout',
+  'toward',
+  'up',
+  'without',
+  'being',
+  'becoming',
+  'both',
+  'either',
+  'even',
+  'else',
+  'neither',
+  'only',
+  'otherwise',
+  'quite',
+  'rather',
+  'somewhat',
+  'such',
+  'so',
+  'too',
+  'very',
+  'own',
+  'anybody',
+  'anyone',
+  'anything',
+  'everybody',
+  'everyone',
+  'everything',
+  'nobody',
+  'no one',
+  'nothing',
+  'none',
+  'somebody',
+  'someone',
+  'something',
+  'several',
+  'few',
+  'many',
+  'most',
+  'much',
+  'little',
+  'more',
+  'less',
+  'least',
+  'enough',
+  'again',
+  'also',
+  'besides',
+  'furthermore',
+  'moreover',
+  'therefore',
+  'however',
+  'nevertheless',
+  'nonetheless',
+  'still',
+  'first',
+  'second',
+  'third',
+  'last',
+  'next',
+  'then',
+  'finally',
+  'ok',
+  'fine',
+  'please',
+  'sorry',
+  'thanks',
+  'welcome',
+  'alongside',
+  'unlike',
+  'amongst',
+  'including',
+  'like',
+  'but',
+  'yet',
+  'nor',
+  'once',
+  'whether',
+  'despite',
+  'though',
+  'wherever',
+  'whereas',
+  'lest',
+  'provided',
+  'providing',
+  'except',
+  'than',
+];
 
-// Extract keyword from URL
-export async function extractKeywordsFromURL(url: string) {
-  try {
-    // Create browser
-    const browser = await puppeteer.launch({
-      headless: 'new',
-      args: ['--no-sandbox'],
-      defaultViewport: { width: 1024, height: 1600 },
-    });
+// Check if a phrase starts with an excluded words
+const startsWithExcludedWord = (phrase: string) =>
+  skipWords.includes(phrase.split(' ')[0]?.trim());
 
-    // Create page
-    const page = await browser.newPage();
+// Check if a phrase ends with an excluded words
+const endsWithExcludedWord = (phrase: string) => {
+  // Create words array
+  const words = phrase.split(' ');
 
-    // Go to the homepage
-    await page.goto(url, { timeout: 0 });
-
-    // Extract data from each page
-    const data = await page.evaluate(() => {
-      // Get title
-      const title = document
-        .querySelector<HTMLTitleElement>('head > title')
-        ?.textContent?.trim();
-
-      // Get description
-      const description = document
-        .querySelector<HTMLMetaElement>('head > meta[name="description"')
-        ?.content.trim();
-
-      // Get keywords
-      const keywords = document
-        .querySelector<HTMLMetaElement>('head > meta[name="keywords"')
-        ?.content.trim();
-
-      // Headings, alt tags and link titles
-      const alts: string[] = [];
-      const heading1: string[] = [];
-      const heading2: string[] = [];
-      const heading3: string[] = [];
-
-      // Get heading 1
-      document
-        .querySelectorAll('h1')
-        .forEach((element) => heading1.push(element.textContent?.trim() || ''));
-
-      // Get heading 2
-      document
-        .querySelectorAll('h2')
-        .forEach((element) => heading2.push(element.textContent?.trim() || ''));
-
-      // Get heading 3
-      document
-        .querySelectorAll('h3')
-        .forEach((element) => heading3.push(element.textContent?.trim() || ''));
-
-      // Get alts
-      document
-        .querySelectorAll('img')
-        .forEach((element) =>
-          alts.push(element.getAttribute('alt')?.trim() || '')
-        );
-
-      // Return data
-      return {
-        title: title || '',
-        alts: alts.toString(),
-        keywords: keywords || '',
-        heading3: heading3.toString(),
-        heading2: heading2.toString(),
-        heading1: heading1.toString(),
-        description: description || '',
-      };
-    });
-
-    // Destructure data
-    const { alts, title, keywords, heading1, heading2, heading3, description } =
-      data;
-
-    // Create a string with page data
-    const pageData = `${title} ${description} ${keywords} ${heading1} ${heading2} ${heading3} ${alts}`;
-
-    // Extract keyword from page data
-    const extractedKeywords = extractKeywordsFromText(pageData);
-
-    // Return the keywords
-    return extractedKeywords;
-  } catch (err) {
-    // Log error
-    console.log(err);
-  }
-}
+  // Return status
+  return skipWords.includes(words[words.length - 1]?.trim());
+};
 
 // Extract keywords from Text
 export function extractKeywordsFromText(input: string) {
