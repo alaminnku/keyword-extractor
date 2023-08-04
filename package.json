@@ -1,7 +1,7 @@
 {
   "name": "text-to-keywords",
-  "version": "1.0.0",
   "description": "A small package to extract the most frequently used phrases or keywords from a long text.",
+  "version": "1.0.0",
   "main": "dist/app.js",
   "types": "dist/app.d.ts",
   "scripts": {
