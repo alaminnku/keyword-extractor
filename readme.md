@@ -5,13 +5,13 @@ A small package to extract the most frequently used phrases or keywords from a l
 ## Installation
 
 ```
-npm i keyword-extractor
+npm i text-to-keywords
 ```
 
 or
 
 ```
-yarn add keyword-extractor
+yarn add text-to-keywords
 ```
 
 ## Usage
