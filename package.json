@@ -1,7 +1,15 @@
 {
-  "name": "extract-keyword",
+  "name": "keyword-extractor",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/alaminnku/keyword-extractor.git"
+  },
   "version": "1.0.0",
-  "main": "app.ts",
+  "description": "A node.js library to extract keywords from a URL or plain text.",
+  "main": "dist/app.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc"
   },
